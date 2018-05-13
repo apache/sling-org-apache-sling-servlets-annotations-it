@@ -85,6 +85,7 @@ public class ServletRegistrationIT {
     @Ignore("Prefix is ignored!")
     public void testPathBoundServletWithPrefix() throws ClientException {
         CLIENT.doGet("/bin/PathBoundServletWithPrefix", 555);
+        CLIENT.doGet("/bin/PathBoundServletWithPrefix.with.some.selector.and.extension", 555);
     }
 
     @Test
@@ -99,7 +100,7 @@ public class ServletRegistrationIT {
     @Test
     @Ignore("Prefix is not working somehow")
     public void testResourceTypeBoundServletWithPrefix() throws ClientException, UnsupportedEncodingException {
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix", 403);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix", 555);
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.html", 555);
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.json", 555);
         // only GET and HEAD are supposed to be working

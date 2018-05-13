@@ -23,17 +23,12 @@ import javax.servlet.ServletException;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.servlets.ServletResolverConstants;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.servlets.annotations.SlingServletByResourceType;
 import org.osgi.service.component.annotations.Component;
 
-@Component(service=Servlet.class, property = { 
-        ServletResolverConstants.SLING_SERVLET_RESOURCE_TYPES + "=/apps/sling/testservlets/ResourceTypeBoundServletWithMethods",
-        ServletResolverConstants.SLING_SERVLET_METHODS + "=PUT",
-        ServletResolverConstants.SLING_SERVLET_METHODS + "=POST"
-      })
-@SlingServletByResourceType(sling_servlet_resourceTypes="/apps/sling/testservlets/ResourceTypeBoundServletWithMethods", sling_servlet_methods= {"PUT", "POST"})
+@Component(service=Servlet.class)
+@SlingServletByResourceType(resourceTypes="/apps/sling/testservlets/ResourceTypeBoundServletWithMethods", methods= {"PUT", "POST"})
 public class ResourceTypeBoundServletWithMethods extends SlingAllMethodsServlet {
 
     /**

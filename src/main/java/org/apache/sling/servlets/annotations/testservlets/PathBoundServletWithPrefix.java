@@ -28,7 +28,7 @@ import org.apache.sling.servlets.annotations.SlingServletByPath;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
-@SlingServletByPath(sling_servlet_paths="PathBoundServletWithPrefix", sling_servlet_prefix="/bin")
+@SlingServletByPath(paths="PathBoundServletWithPrefix", prefix="/bin")
 public class PathBoundServletWithPrefix extends SlingSafeMethodsServlet {
 
     /**

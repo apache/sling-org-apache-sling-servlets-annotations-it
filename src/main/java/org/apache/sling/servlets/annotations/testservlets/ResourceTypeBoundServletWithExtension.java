@@ -28,7 +28,7 @@ import org.apache.sling.servlets.annotations.SlingServletByResourceType;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
-@SlingServletByResourceType(sling_servlet_resourceTypes="/apps/sling/testservlets/ResourceTypeBoundServletWithExtension", sling_servlet_extensions= {"ext1", "ext2"})
+@SlingServletByResourceType(resourceTypes="/apps/sling/testservlets/ResourceTypeBoundServletWithExtension", extensions= {"ext1", "ext2"})
 public class ResourceTypeBoundServletWithExtension extends SlingAllMethodsServlet {
 
     /**
