@@ -28,7 +28,7 @@ import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
-@SlingServletResourceTypes(resourceType="/apps/sling/testservlets/ResourceTypeBoundServletWithMethods", method= {"PUT", "POST"})
+@SlingServletResourceTypes(resourceTypes="/apps/sling/testservlets/ResourceTypeBoundServletWithMethods", methods= {"PUT", "POST"})
 public class ResourceTypeBoundServletWithMethods extends SlingAllMethodsServlet {
 
     /**
