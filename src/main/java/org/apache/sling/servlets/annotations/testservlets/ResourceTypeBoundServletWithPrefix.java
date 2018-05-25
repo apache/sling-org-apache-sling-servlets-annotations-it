@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
 @SlingServletPrefix("/apps/sling/testservlets/")
-@SlingServletResourceTypes(resourceTypes="ResourceTypeBoundServletWithPrefix")
+@SlingServletResourceTypes(resourceType="ResourceTypeBoundServletWithPrefix")
 public class ResourceTypeBoundServletWithPrefix extends SlingAllMethodsServlet {
 
     /**

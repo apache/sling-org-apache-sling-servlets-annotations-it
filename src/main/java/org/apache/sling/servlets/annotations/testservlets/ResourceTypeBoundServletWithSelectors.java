@@ -28,7 +28,7 @@ import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
-@SlingServletResourceTypes(resourceTypes="/apps/sling/testservlets/ResourceTypeBoundServletWithSelectors", selectors= {"selector1.selector2", "selector3"})
+@SlingServletResourceTypes(resourceType="/apps/sling/testservlets/ResourceTypeBoundServletWithSelectors", selector= {"selector1.selector2", "selector3"})
 public class ResourceTypeBoundServletWithSelectors extends SlingAllMethodsServlet {
 
     /**
