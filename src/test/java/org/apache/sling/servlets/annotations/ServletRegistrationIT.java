@@ -68,6 +68,10 @@ public class ServletRegistrationIT {
         CLIENT.waitExists("/index.html", SERVICE_START_TIMEOUT, 500);
         
         CLIENT.waitServiceRegistered("javax.servlet.Servlet", BUNDLE_SYMBOLICNAME, SERVICE_START_TIMEOUT, 500);
+        CLIENT.waitComponentRegistered("org.apache.sling.servlets.annotations.testservlets.PathBoundServlet", SERVICE_START_TIMEOUT, 500);
+        CLIENT.waitComponentRegistered("org.apache.sling.servlets.annotations.testservletfilters.SimpleServletFilter", SERVICE_START_TIMEOUT, 500);
+        // wait a bit longer to make sure really all servlets and filters are active
+        //Thread.sleep(500);
     }
     
     @AfterClass
@@ -76,13 +80,21 @@ public class ServletRegistrationIT {
     }
 
     @Test
-    public void testPathBoundServlet() throws ClientException {
+    public void testPathBoundServlet() throws ClientException, UnsupportedEncodingException {
         CLIENT.doGet("/bin/PathBoundServlet", 555);
         CLIENT.doGet("/bin/PathBoundServlet.with.some.selector.and.extension", 555);
+        CLIENT.doGet("/bin/PathBoundServlet.with.some.selector.and.extension/suffix", 555);
+        // other methods should work as well
+        CLIENT.doPut("/bin/PathBoundServlet", new StringEntity("some text"), Collections.emptyList(), 555);
+    }
+    
+    @Test
+    public void testPathBoundServletWithFilter() throws ClientException {
+        CLIENT.doGet("/bin/PathBoundServlet.html/simplefilter", 556);
+        CLIENT.doGet("/bin/PathBoundServlet.with.some.selector.and.extension/simplefilter", 556);
     }
 
     @Test
-    @Ignore("Prefix is ignored!")
     public void testPathBoundServletWithPrefix() throws ClientException {
         CLIENT.doGet("/bin/PathBoundServletWithPrefix", 555);
         CLIENT.doGet("/bin/PathBoundServletWithPrefix.with.some.selector.and.extension", 555);
@@ -98,7 +110,6 @@ public class ServletRegistrationIT {
     }
 
     @Test
-    @Ignore("Prefix is not working somehow")
     public void testResourceTypeBoundServletWithPrefix() throws ClientException, UnsupportedEncodingException {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix", 555);
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.html", 555);

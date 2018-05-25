@@ -23,13 +23,13 @@ import javax.servlet.ServletException;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
-import org.apache.sling.servlets.annotations.SlingServletByPath;
+import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.apache.sling.servlets.annotations.SlingServletPaths;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
-@SlingServletByPath(paths="/bin/PathBoundServlet")
-public class PathBoundServlet extends SlingSafeMethodsServlet {
+@SlingServletPaths("/bin/PathBoundServlet")
+public class PathBoundServlet extends SlingAllMethodsServlet {
 
     /**
      * 
@@ -38,6 +38,16 @@ public class PathBoundServlet extends SlingSafeMethodsServlet {
 
     @Override
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
+        response.setStatus(555);
+    }
+
+    @Override
+    protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
+        response.setStatus(555);
+    }
+
+    @Override
+    protected void doPut(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         response.setStatus(555);
     }
 }

@@ -24,11 +24,13 @@ import javax.servlet.ServletException;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
-import org.apache.sling.servlets.annotations.SlingServletByResourceType;
+import org.apache.sling.servlets.annotations.SlingServletPrefix;
+import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
-@SlingServletByResourceType(resourceTypes="ResourceTypeBoundServletWithPrefix", prefix="/apps/sling/testservlets")
+@SlingServletPrefix("/apps/sling/testservlets/")
+@SlingServletResourceTypes(resourceTypes="ResourceTypeBoundServletWithPrefix")
 public class ResourceTypeBoundServletWithPrefix extends SlingAllMethodsServlet {
 
     /**

@@ -24,11 +24,13 @@ import javax.servlet.ServletException;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
-import org.apache.sling.servlets.annotations.SlingServletByPath;
+import org.apache.sling.servlets.annotations.SlingServletPaths;
+import org.apache.sling.servlets.annotations.SlingServletPrefix;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service=Servlet.class)
-@SlingServletByPath(paths="PathBoundServletWithPrefix", prefix="/bin")
+@SlingServletPrefix("/bin/")
+@SlingServletPaths("PathBoundServletWithPrefix")
 public class PathBoundServletWithPrefix extends SlingSafeMethodsServlet {
 
     /**
