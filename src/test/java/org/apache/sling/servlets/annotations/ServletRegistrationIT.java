@@ -30,7 +30,6 @@ import org.apache.sling.testing.clients.osgi.OsgiConsoleClient;
 import org.apache.sling.testing.junit.rules.SlingRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -41,7 +40,7 @@ public class ServletRegistrationIT {
     
     public static OsgiConsoleClient CLIENT;
     
-    private static final String BUNDLE_SYMBOLICNAME = "sling-org-apache-sling-servlets-annotations-it";
+    private static final String BUNDLE_SYMBOLICNAME = "org.apache.sling.servlets.annotations.it";
     private static final long BUNDLE_START_TIMEOUT = TimeUnit.SECONDS.toMillis(10);
     private static final long SERVICE_START_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
     
@@ -63,16 +62,15 @@ public class ServletRegistrationIT {
         if (!file.exists()) {
             throw new IllegalArgumentException("Test bundle file in " + file + " does not exist!");
         }
-        CLIENT.waitInstallBundle(file, true, -1, BUNDLE_START_TIMEOUT, 500);
         // wait until the server is fully started
         CLIENT.waitExists("/index.html", SERVICE_START_TIMEOUT, 500);
+
+        CLIENT.waitInstallBundle(file, true, -1, BUNDLE_START_TIMEOUT, 500);
         
         // the following method somehow fails sometimes
-        //CLIENT.waitServiceRegistered("javax.servlet.Servlet", BUNDLE_SYMBOLICNAME, SERVICE_START_TIMEOUT, 500);
+        CLIENT.waitServiceRegistered("javax.servlet.Servlet", BUNDLE_SYMBOLICNAME, SERVICE_START_TIMEOUT, 500);
         CLIENT.waitComponentRegistered("org.apache.sling.servlets.annotations.testservlets.PathBoundServlet", SERVICE_START_TIMEOUT, 500);
         CLIENT.waitComponentRegistered("org.apache.sling.servlets.annotations.testservletfilters.SimpleServletFilter", SERVICE_START_TIMEOUT, 500);
-        // wait a bit longer to make sure really all servlets and filters are active
-        //Thread.sleep(500);
     }
     
     @AfterClass
