@@ -123,8 +123,9 @@ public class ServletRegistrationIT {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.html", 200); // DEFAULT GET Servlet
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.ext1", 555);
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", 555);
-        // only GET and HEAD are supposed to be working
-        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", new StringEntity("some text"), Collections.emptyList(), 201);
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", new StringEntity("some text"), Collections.emptyList(), 555);
+        // extension is considered for all methods!
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.someotherext", new StringEntity("some text"), Collections.emptyList(), 201); // DEFAULT servlet
     }
 
     @Test
