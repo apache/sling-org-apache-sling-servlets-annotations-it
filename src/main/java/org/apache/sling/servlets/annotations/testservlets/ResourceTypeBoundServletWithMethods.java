@@ -38,16 +38,16 @@ public class ResourceTypeBoundServletWithMethods extends SlingAllMethodsServlet 
 
     @Override
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(555);
+        response.setStatus(580);
     }
 
     @Override
     protected void doPut(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(555);
+        response.setStatus(581);
     }
     
     @Override
     protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(555);
+        response.setStatus(582);
     }
 }

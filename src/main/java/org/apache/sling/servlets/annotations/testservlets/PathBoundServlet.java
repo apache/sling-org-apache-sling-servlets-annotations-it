@@ -43,11 +43,11 @@ public class PathBoundServlet extends SlingAllMethodsServlet {
 
     @Override
     protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(555);
+        response.setStatus(556);
     }
 
     @Override
     protected void doPut(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(555);
+        response.setStatus(557);
     }
 }

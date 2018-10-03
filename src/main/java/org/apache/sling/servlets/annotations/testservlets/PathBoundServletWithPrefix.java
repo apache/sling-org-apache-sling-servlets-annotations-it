@@ -40,6 +40,6 @@ public class PathBoundServletWithPrefix extends SlingSafeMethodsServlet {
 
     @Override
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(555);
+        response.setStatus(610);
     }
 }

@@ -84,7 +84,7 @@ public class ServletRegistrationIT {
         CLIENT.doGet("/bin/PathBoundServlet.with.some.selector.and.extension", 555);
         CLIENT.doGet("/bin/PathBoundServlet.with.some.selector.and.extension/suffix", 555);
         // other methods should work as well
-        CLIENT.doPut("/bin/PathBoundServlet", new StringEntity("some text"), Collections.emptyList(), 555);
+        CLIENT.doPut("/bin/PathBoundServlet", new StringEntity("some text"), Collections.emptyList(), 557);
     }
     
     @Test
@@ -95,24 +95,24 @@ public class ServletRegistrationIT {
 
     @Test
     public void testPathBoundServletWithPrefix() throws ClientException {
-        CLIENT.doGet("/bin/PathBoundServletWithPrefix", 555);
-        CLIENT.doGet("/bin/PathBoundServletWithPrefix.with.some.selector.and.extension", 555);
+        CLIENT.doGet("/bin/PathBoundServletWithPrefix", 610);
+        CLIENT.doGet("/bin/PathBoundServletWithPrefix.with.some.selector.and.extension", 610);
     }
 
     @Test
     public void testResourceTypeBoundServlet() throws ClientException, UnsupportedEncodingException {
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet", 555);
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet.html", 555);
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet.json", 555);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet", 560);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet.html", 560);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet.json", 560);
         // only GET and HEAD are supposed to be working
         CLIENT.doPut("/content/servlettest/resourceTypeBoundServlet.json", new StringEntity("some text"), Collections.emptyList(), 201);
     }
 
     @Test
     public void testResourceTypeBoundServletWithPrefix() throws ClientException, UnsupportedEncodingException {
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix", 555);
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.html", 555);
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.json", 555);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix", 590);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.html", 590);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.json", 590);
         // only GET and HEAD are supposed to be working
         CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithPrefix.json", new StringEntity("some text"), Collections.emptyList(), 201);
     }
@@ -121,9 +121,9 @@ public class ServletRegistrationIT {
     public void testResourceTypeBoundServletWithExtension() throws ClientException, UnsupportedEncodingException {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension", 403); // without extension is a index listing, which is forbidden by default
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.html", 200); // DEFAULT GET Servlet
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.ext1", 555);
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", 555);
-        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", new StringEntity("some text"), Collections.emptyList(), 555);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.ext1", 570);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", 570);
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", new StringEntity("some text"), Collections.emptyList(), 571);
         // extension is considered for all methods!
         CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.someotherext", new StringEntity("some text"), Collections.emptyList(), 201); // DEFAULT servlet
     }
@@ -132,12 +132,12 @@ public class ServletRegistrationIT {
     public void testResourceTypeBoundServletWithSelectors() throws ClientException, UnsupportedEncodingException {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.someext", 404);
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector1.someext", 404);
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector3.someext", 555);
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector1.selector2.someext", 555);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector3.someext", 600);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector1.selector2.someext", 600);
         // some non-registered selector as first selector
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.someotherselector.selector1.selector2.someext", 404);
         // some non-registered selector as last selector
-        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector1.selector2.someotherselector.someext", 555);
+        CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector1.selector2.someotherselector.someext", 600);
         // only GET and HEAD are supposed to be working
         CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithSelectors.selector3.someext", new StringEntity("some text"), Collections.emptyList(), 201);
     }
@@ -145,7 +145,7 @@ public class ServletRegistrationIT {
     @Test
     public void testResourceTypeBoundServletWithMethods() throws ClientException, UnsupportedEncodingException {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithMethods.someext", 404); // DEFAULT Get not triggered due to weird extension
-        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithMethods.someext", new StringEntity("some text"), Collections.emptyList(), 555);
-        CLIENT.doPost("/content/servlettest/resourceTypeBoundServletWithMethods.someext", new StringEntity("some text"), Collections.emptyList(), 555);
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithMethods.someext", new StringEntity("some text"), Collections.emptyList(), 581);
+        CLIENT.doPost("/content/servlettest/resourceTypeBoundServletWithMethods.someext", new StringEntity("some text"), Collections.emptyList(), 582);
     }
 }
