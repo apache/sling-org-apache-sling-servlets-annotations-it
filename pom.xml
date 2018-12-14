@@ -94,6 +94,7 @@
                             <goal>package</goal>
                         </goals>
                         <configuration>
+                            <attachArtifact>false</attachArtifact>
                             <modelDirectory>${project.basedir}/src/test/provisioning</modelDirectory>
                             <usePomDependencies>true</usePomDependencies>
                         </configuration>
