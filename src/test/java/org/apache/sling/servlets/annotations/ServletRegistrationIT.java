@@ -63,7 +63,7 @@ public class ServletRegistrationIT {
             throw new IllegalArgumentException("Test bundle file in " + file + " does not exist!");
         }
         // wait until the server is fully started
-        CLIENT.waitExists("/index.html", SERVICE_START_TIMEOUT, 500);
+        CLIENT.waitExists("/starter/index.html", SERVICE_START_TIMEOUT, 500);
 
         CLIENT.waitInstallBundle(file, true, -1, BUNDLE_START_TIMEOUT, 500);
         
@@ -147,5 +147,18 @@ public class ServletRegistrationIT {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithMethods.someext", 404); // DEFAULT Get not triggered due to weird extension
         CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithMethods.someext", new StringEntity("some text"), Collections.emptyList(), 581);
         CLIENT.doPost("/content/servlettest/resourceTypeBoundServletWithMethods.someext", new StringEntity("some text"), Collections.emptyList(), 582);
+    }
+
+    @Test
+    public void testInheritingServlets() throws ClientException {
+        CLIENT.doGet("/content/servlettest/baseResourceTypeBoundServletWithSelectors", 403); // no selectors passed
+        CLIENT.doGet("/content/servlettest/baseResourceTypeBoundServletWithSelectors.someext", 404); // no selectors passed
+        CLIENT.doGet("/content/servlettest/baseResourceTypeBoundServletWithSelectors.sel1.someext", 610); // matches
+        CLIENT.doGet("/content/servlettest/baseResourceTypeBoundServletWithSelectors.sel2.someext", 610); // matches
+        CLIENT.doGet("/content/servlettest/inheritingResourceTypeBoundServlet", 620); // matches
+        CLIENT.doGet("/content/servlettest/inheritingResourceTypeBoundServlet.someext", 620); // matches
+        CLIENT.doGet("/content/servlettest/inheritingResourceTypeBoundServlet.sel.someext", 620); // matches
+        CLIENT.doGet("/content/servlettest/inheritingResourceTypeBoundServlet.sel1.someext", 610); // delegated to Base
+        CLIENT.doGet("/content/servlettest/inheritingResourceTypeBoundServlet.sel2.someext", 610); // delegated to Base
     }
 }
