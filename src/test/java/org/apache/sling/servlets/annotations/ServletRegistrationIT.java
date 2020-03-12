@@ -16,68 +16,19 @@
  */
 package org.apache.sling.servlets.annotations;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.http.entity.StringEntity;
 import org.apache.sling.testing.clients.ClientException;
-import org.apache.sling.testing.clients.osgi.OsgiConsoleClient;
-import org.apache.sling.testing.junit.rules.SlingRule;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 
-public class ServletRegistrationIT {
+/** Verify servlet selection based on our annotations. This duplicates
+ *  some of the servlet resolver tests, see also {@link ServicePropertiesIT}
+ *  for another testing method.
+ */
+public class ServletRegistrationIT extends TestSupport {
     
-    @Rule
-    public SlingRule methodRule = new SlingRule();
-    
-    public static OsgiConsoleClient CLIENT;
-    
-    private static final String BUNDLE_SYMBOLICNAME = "org.apache.sling.servlets.annotations.it";
-    private static final long BUNDLE_START_TIMEOUT = TimeUnit.SECONDS.toMillis(10);
-    private static final long SERVICE_START_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
-    
-    @BeforeClass
-    public static void setupOnce() throws ClientException, InterruptedException, TimeoutException, URISyntaxException {
-        String baseUrl = System.getProperty("baseUrl");
-        if (baseUrl == null) {
-            throw new IllegalArgumentException("IT must be started with environment variable 'baseUrl' set");
-        }
-        URI url = new URI(baseUrl);
-        CLIENT = new OsgiConsoleClient(url, "admin", "admin");
-        
-        String bundleFile = System.getProperty("bundleFile");
-        if (bundleFile == null) {
-            throw new IllegalArgumentException("IT must be started with environment variable 'bundleFile' set");
-        }
-        // deploy bundle to server
-        File file = new File(bundleFile);
-        if (!file.exists()) {
-            throw new IllegalArgumentException("Test bundle file in " + file + " does not exist!");
-        }
-        // wait until the server is fully started
-        CLIENT.waitExists("/starter/index.html", SERVICE_START_TIMEOUT, 500);
-
-        CLIENT.waitInstallBundle(file, true, -1, BUNDLE_START_TIMEOUT, 500);
-        
-        // the following method somehow fails sometimes
-        CLIENT.waitServiceRegistered("javax.servlet.Servlet", BUNDLE_SYMBOLICNAME, SERVICE_START_TIMEOUT, 500);
-        CLIENT.waitComponentRegistered("org.apache.sling.servlets.annotations.testservlets.PathBoundServlet", SERVICE_START_TIMEOUT, 500);
-        CLIENT.waitComponentRegistered("org.apache.sling.servlets.annotations.testservletfilters.SimpleServletFilter", SERVICE_START_TIMEOUT, 500);
-    }
-    
-    @AfterClass
-    public static void tearDownOnce() throws ClientException {
-        //CLIENT.uninstallBundle(BUNDLE_SYMBOLICNAME);
-    }
-
     @Test
     public void testPathBoundServlet() throws ClientException, UnsupportedEncodingException {
         CLIENT.doGet("/bin/PathBoundServlet", 555);
