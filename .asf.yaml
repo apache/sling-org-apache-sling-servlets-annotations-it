@@ -1,0 +1,8 @@
+github:
+  description: "Apache Sling Servlet Annotations Integration Tests"
+  homepage: "https://sling.apache.org/"
+  labels:
+    - sling
+    - java
+    - annotations
+    - servlets
