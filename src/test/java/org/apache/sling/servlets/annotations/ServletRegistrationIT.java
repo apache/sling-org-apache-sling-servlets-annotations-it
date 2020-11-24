@@ -27,7 +27,7 @@ import org.junit.Test;
  *  some of the servlet resolver tests, see also {@link ServicePropertiesIT}
  *  for another testing method.
  */
-public class ServletRegistrationIT extends TestSupport {
+public class ServletRegistrationIT extends AnnotationsTestSupport {
     
     @Test
     public void testPathBoundServlet() throws ClientException, UnsupportedEncodingException {
@@ -56,7 +56,7 @@ public class ServletRegistrationIT extends TestSupport {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet.html", 560);
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServlet.json", 560);
         // only GET and HEAD are supposed to be working
-        CLIENT.doPut("/content/servlettest/resourceTypeBoundServlet.json", new StringEntity("some text"), Collections.emptyList(), 201);
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServlet.json", new StringEntity("some text"), Collections.emptyList(), 405);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class ServletRegistrationIT extends TestSupport {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.html", 590);
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithPrefix.json", 590);
         // only GET and HEAD are supposed to be working
-        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithPrefix.json", new StringEntity("some text"), Collections.emptyList(), 201);
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithPrefix.json", new StringEntity("some text"), Collections.emptyList(), 405);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class ServletRegistrationIT extends TestSupport {
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", 570);
         CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.ext2", new StringEntity("some text"), Collections.emptyList(), 571);
         // extension is considered for all methods!
-        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.someotherext", new StringEntity("some text"), Collections.emptyList(), 201); // DEFAULT servlet
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithExtension.someotherext", new StringEntity("some text"), Collections.emptyList(), 405); // DEFAULT servlet
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ServletRegistrationIT extends TestSupport {
         // some non-registered selector as last selector
         CLIENT.doGet("/content/servlettest/resourceTypeBoundServletWithSelectors.selector1.selector2.someotherselector.someext", 600);
         // only GET and HEAD are supposed to be working
-        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithSelectors.selector3.someext", new StringEntity("some text"), Collections.emptyList(), 201);
+        CLIENT.doPut("/content/servlettest/resourceTypeBoundServletWithSelectors.selector3.someext", new StringEntity("some text"), Collections.emptyList(), 405);
     }
 
     @Test

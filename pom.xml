@@ -38,9 +38,10 @@
     <!-- compile with java 7 -->
     <properties>
         <sling.java.version>8</sling.java.version>
-        <http.host>localhost</http.host>
-        <!-- start with -DkeepITServerRunning=true to allow to rerun ITs or inspect the server after the ITs have been executed there -->
-        <keepITServerRunning>false</keepITServerRunning>
+        <org.ops4j.pax.exam.version>4.13.3</org.ops4j.pax.exam.version>
+        <!-- additional options that can be passed to Pax before executing the tests -->
+        <pax.vm.options />
+        <bundle.filename>${basedir}/target/${project.build.finalName}.jar</bundle.filename>
     </properties>
 
     <build>
@@ -49,85 +50,6 @@
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-maven-plugin</artifactId>
                 <version>5.0.0</version>
-            </plugin>
-            <plugin>
-                <!-- Find free ports to run our server -->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>reserve-server-port</id>
-                        <goals>
-                            <goal>reserve-network-port</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                        <configuration>
-                            <portNames>
-                                <!-- used port name must be stored in property because it must be used for the base url -->
-                                <portName>http.port</portName>
-                            </portNames>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <!-- the Sling instance is provisioned from the model in src/main/provisioning/it-model.txt -->
-                <groupId>org.apache.sling</groupId>
-                <artifactId>slingstart-maven-plugin</artifactId>
-                <!-- for https://issues.apache.org/jira/browse/SLING-7662 -->
-                <version>1.8.2</version>
-                <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <id>customise-starter</id>
-                        <goals>
-                            <goal>prepare-package</goal>
-                        </goals>
-                        <configuration>
-                            <modelDirectory>${project.basedir}/src/test/provisioning</modelDirectory>
-                            <usePomDependencies>true</usePomDependencies>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>package-starter</id>
-                        <goals>
-                            <goal>package</goal>
-                        </goals>
-                        <configuration>
-                            <attachArtifact>false</attachArtifact>
-                            <modelDirectory>${project.basedir}/src/test/provisioning</modelDirectory>
-                            <usePomDependencies>true</usePomDependencies>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>start-container-before-IT</id>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-container-after-IT</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <configuration>
-                            <shouldBlockUntilKeyIsPressed>${keepITServerRunning}</shouldBlockUntilKeyIsPressed>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <servers>
-                        <!-- this configuration applies to both 'start' and 'stop' -->
-                        <server>
-                            <id>singleinstance</id>
-                            <port>${http.port}</port>
-                            <vmOpts>${sling.vm.options}</vmOpts>
-                            <stdOutFile>sling/logs/stdout.log</stdOutFile>
-                        </server>
-                    </servers>
-                    <!-- this configuration only applies to 'prepare-package' and 'package' -->
-                    <disableExtendingMavenClasspath>true</disableExtendingMavenClasspath>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -142,10 +64,14 @@
                 </executions>
                 <configuration>
                     <systemPropertyVariables>
-                        <baseUrl>http://${http.host}:${http.port}/</baseUrl>
-                        <bundleFile>${project.build.directory}/${project.build.finalName}.jar</bundleFile>
+                        <bundle.filename>${bundle.filename}</bundle.filename>
+                        <pax.vm.options>${pax.vm.options}</pax.vm.options>
                     </systemPropertyVariables>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.servicemix.tooling</groupId>
+                <artifactId>depends-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -215,6 +141,54 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.framework</artifactId>
+            <version>6.0.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.testing.paxexam</artifactId>
+            <version>3.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam</artifactId>
+            <version>${org.ops4j.pax.exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-cm</artifactId>
+            <version>${org.ops4j.pax.exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-container-forked</artifactId>
+            <version>${org.ops4j.pax.exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit4</artifactId>
+            <version>${org.ops4j.pax.exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-link-mvn</artifactId>
+            <version>${org.ops4j.pax.exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.url</groupId>
+            <artifactId>pax-url-wrap</artifactId>
+            <version>2.3.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

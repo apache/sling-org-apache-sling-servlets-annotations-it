@@ -35,7 +35,7 @@ import org.junit.Test;
  *  are set by our annotations - this is what this class does for some of
  *  our test services.
  */
-public class ServicePropertiesIT extends TestSupport {
+public class ServicePropertiesIT extends AnnotationsTestSupport {
     
     private static String componentPath(Object nameOrId) {
         return "/system/console/components/" + nameOrId + ".json";
