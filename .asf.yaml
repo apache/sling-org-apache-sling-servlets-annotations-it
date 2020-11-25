@@ -1,8 +1,9 @@
 github:
-  description: "Apache Sling Servlet Annotations Integration Tests"
+  description: "Apache Sling Servlet Annotations Integration Tests (deprecated)"
   homepage: "https://sling.apache.org/"
   labels:
     - sling
     - java
     - annotations
     - servlets
+    - deprecated
