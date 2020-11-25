@@ -27,9 +27,9 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExamServer;
 import org.ops4j.pax.exam.options.extra.VMOption;
 
-import static org.apache.sling.testing.paxexam.SlingOptions.logback;
 import static org.apache.sling.testing.paxexam.SlingOptions.slingQuickstartOakTar;
-import static org.ops4j.pax.exam.CoreOptions.composite;
+import static org.apache.sling.testing.paxexam.SlingOptions.versionResolver;
+import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.when;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
@@ -38,7 +38,7 @@ import java.net.URI;
 
 public class AnnotationsTestSupport extends TestSupport {
 
-    private final static int STARTUP_WAIT_SECONDS = 30;
+    private final static int STARTUP_WAIT_SECONDS = 60;
 
     protected OsgiConsoleClient CLIENT;
     protected static int httpPort;
@@ -46,16 +46,9 @@ public class AnnotationsTestSupport extends TestSupport {
     @ClassRule
     public static PaxExamServer serverRule = new PaxExamServer();
 
-    public AnnotationsTestSupport() {
-        if(httpPort == 0) {
-            // findFreePort should probably be a static method
-            httpPort = findFreePort();
-        }
-    }
-
     @Configuration
     public Option[] configuration() throws Exception {
-
+        httpPort = findFreePort();
         final String vmOpt = System.getProperty("pax.vm.options");
         VMOption vmOption = null;
         if (StringUtils.isNotEmpty(vmOpt)) {
@@ -68,29 +61,21 @@ public class AnnotationsTestSupport extends TestSupport {
             jacocoCommand = new VMOption(jacocoOpt);
         }
 
-        final String workingDirectory = workingDirectory();
-
-        return composite(
-            // TODO not sure why the below list of bundles is different from
-            // running tests with PaxExam.class - but this setup works
-            //super.baseConfiguration(),
-
+        return options(
             when(vmOption != null).useOptions(vmOption),
             when(jacocoCommand != null).useOptions(jacocoCommand),
 
             // For some reason, Jetty starts first on port 8080 without this
             systemProperty("org.osgi.service.http.port").value(String.valueOf(httpPort)),
 
-            slingQuickstartOakTar(workingDirectory, httpPort),
+            serverBaseConfiguration(),
+            slingQuickstartOakTar(workingDirectory(), httpPort),
             testBundle("bundle.filename"),
-
-            logback(),
-            mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.log").version("1.2.4"),
-            mavenBundle().groupId("log4j").artifactId("log4j").version("1.2.17"),
-            mavenBundle().groupId("org.apache.aries.spifly").artifactId("org.apache.aries.spifly.dynamic.framework.extension").version("1.3.2"),
-            mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.webconsole.plugins.ds").version("2.1.0")
-            
-        ).getOptions();
+            mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.webconsole.plugins.ds").version(versionResolver),
+            // logging
+            mavenBundle().groupId("org.ops4j.pax.logging").artifactId("pax-logging-api").versionAsInProject(),
+            mavenBundle().groupId("org.ops4j.pax.logging").artifactId("pax-logging-logback").versionAsInProject()
+        );
     }
 
     @Before
