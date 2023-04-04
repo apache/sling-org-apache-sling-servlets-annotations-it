@@ -2,8 +2,18 @@ github:
   description: "Apache Sling Servlet Annotations Integration Tests (deprecated)"
   homepage: "https://sling.apache.org/"
   labels:
-    - sling
-    - java
-    - annotations
-    - servlets
-    - deprecated
+  - "sling"
+  - "java"
+  - "annotations"
+  - "servlets"
+  - "deprecated"
+  autolink_jira:
+  - "SLING"
+  - "OAK"
+  - "JCR"
+  - "JCRVLT"
+  - "INFRA"
+  - "FELIX"
+  - "MNG"
+notifications:
+  jira_options: "link"
